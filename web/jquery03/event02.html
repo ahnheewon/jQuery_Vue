@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+</head>
+<body>
+    <p>
+        <a href="https://www.naver.com" class="btn1">버튼1</a>
+    </p>    
+    <p class="txt1">내용1</p>
+    <p>
+        <a href="https://www.google.com" class="btn2">버튼2</a>
+    </p> 
+    <p class="txt2">내용2</p>
+    <p>
+        <p><button class="btn3">버튼3</button></p>
+    </p> 
+    <p class="txt3">내용3</p>
+
+    <script>
+        $('.btn1').click(function(e){ // 여기선 매개변수로 event객체밖에 받을 수 없음.
+            //기존 이벤트 동작을 막는 방법1
+             event.preventDefault(); 
+            $('.txt1').css('background-color','green');
+            //이벤트 전달을 막는 방법
+            event.stopPropagation();
+        });
+
+        $('.btn2').on('click',function(e){ 
+            //기존 이벤트 동작을 막는 방법2
+              $('.txt2').css({'border' : '1px solid black', 'background-color' : 'pink'});
+                return false;
+            });
+        
+        // dblclick 이벤트 (dbl -> double)
+        $('.btn3').on('dbclick',function(){
+            $('.txt3').text('더블 클릭 하셨습니다.');
+        });
+
+        //off(이벤트 종료, 선택자, 핸들러)
+        $('.btn3').off('dblclick');
+        $('p').off('click','.btn2',  btnClick);
+        $('.btn1').off();
+
+        //이벤트를 강제로 발생
+         $('.btn1').trigger('click');
+         $('.btn2').click();
+
+    </script>
+</body>
+</html>

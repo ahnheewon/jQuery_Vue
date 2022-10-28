@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <!-- 템플릿 문법 : {{ }} -> render() 함수 -->
+        <!-- 아주 간단한 건 이렇게 출력 하면 된다... -->
+        {{ '결과: ' + result }}
+    </div>
+
+    <script>
+       
+       /*
+            new Vue({
+                el : 'HTML 요소',
+                data : {
+                    //데이터에 대한 모든 정보 (태그 X)
+                },
+                computed : {
+                    //  data 속성에 정의된 정보를 연산한 정보
+                }
+                methods : {
+                    //  데이터를 처리, 메소드
+
+                },
+                watch : {
+                    //  데이터를 감시 (?) -> 변화를 감지
+                    // 태그가 아니라 정보가 변하면 
+                }
+            }
+        */
+
+      let vue1 = new Vue({
+
+            el : '#app',
+            data : {
+                a:1,
+                b:2,
+            },
+            computed : {
+                result : function(){
+                    return this.a + this.b; 
+                }
+            }
+
+            // 페이지 내의 변화를 감지해준다
+            // 익숙해지면 편리한 라이브러리.
+            // 태그에 신경안써도 됨.
+
+        })
+
+    </script>
+
+<div id="app2">
+           <p>{{ myText}}</p>
+        <!-- 템플릿 문법 : {{ }} -> render() 함수 -->
+        <!-- 아주 간단한 건 이렇게 출력 하면 된다... -->
+           <p>{{ result}}</p> <!-- app2에 선언 안되어있어서 불가능.   -->
+    
+<!-- Directive : vue가 해당 요소에 실행할 명령어 (v- )  -->
+
+        <p v-text="myText"></p> 
+        <!-- v-text : vue가 갖고 있는 데이터 변수명 그대로 적음. -->
+
+        <!-- v-text : '' 안에 적어주면 문자열.. 또는 연산도 가능...(자바스크립트)-->
+        <p v-text="'myText'"></p> 
+        <p v-text="6+4"></p>
+
+        <p v-html="yourText"></p> 
+
+</div>
+
+<script>
+    let app2 = new Vue({
+        el : '#app2',
+        data : {
+            // vue가 제어하는 데이터 -> Property 라고 일컫는다.
+            myText : 'Hello!!',
+
+            yourText : '<h1>야호오오오</h1>'
+            // v-text 사용 시 그대로 출력한다.
+            // 제대로 사용하고 싶으면 v-html로 명령하면 됨.
+        }
+    })
+
+    // app2.myText로 호출이 가능한데, 
+    // 원래는 app2.data.myText 였을테지만 편의성을 위해서 "생략"시켰다.
+    // 만약 속성이 알고 싶으면 app2.$attrs 이런 식으로 가능.
+</script>
+
+<div id="app3">
+
+<p>{{ myNumber *.12345 }}</p>
+<p>{{ myText + '를 배워보도록 합시다'}}</p>
+<p>{{ myBoolean }}</p>
+<p>{{ myArray }}</p>
+<p>{{ myArray[0] }}</p>
+<p>{{ myObject }}</p>
+<p>{{ myObject.name }} {{myObject.price }} </p>
+<p>{{ $data }}</p>
+<p>{{ new Date() }}</p> 
+<!-- 자바스크립트 기반이라 js의 내장된 함수 모두 사용 가능. -->
+</div>
+
+    <script>
+        function func1() {
+            return '출력';
+        }
+       
+       let app3 = new Vue({
+
+            el:'#app3',
+            data: {
+                myNumber :12345,
+                myText : 'Vue.js',
+                myBoolean : true,
+                myArray : ['다즐링','얼그레이','실론'],
+                myObject : {
+                    name : '홍차',
+                    price : 600
+                }
+            }
+
+        })
+
+    </script>
+
+
+
+</body>
+</html>

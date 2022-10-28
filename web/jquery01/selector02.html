@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+
+<body>
+    <!-- <h1 id="title">제목</h1> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+    <script>
+        //document.addEventListener('DOMContentLoaded',function(){ // DOM이 실행되고나서컴파일 CDN 없어도 가능.
+      
+      $(document).ready(function(){
+        //직접선택자: Node가 가지고 있는 속성들
+        //전체선택자
+        $('*').css('border','1px solid blue');
+
+        //아이디 선택자
+        $('h2#title').css('background-color','gray') // h2태그에서 id가 "title"인
+                    .css('border','2px solid pink');
+     
+      //클래스 선택자
+      let classTag =$('.blue');
+
+      for(let i=0; i<classTag.length; i++){
+        classTag[i].textContent+=i;
+     //   $(classTag[i]).css('color','red');
+      }
+      
+      classTag.text('클래스 선택자');
+
+      //태그 선택자
+      $('h3').text('직접 선택자로 다시 변경');
+
+      //그룹 선택자
+      $('#title, .blue, h4').css('color','orange');
+
+      //종속 선택자
+      $('h1.blue').text('종속 선택자로 선택');
+    });
+
+
+    </script>
+
+    <h1 class="blue">제이쿼리</h1>
+    <h2 id="title">선택자</h2>
+    <h3 class="blue">직접선택자</h3>
+    <h4>그룹 선택자</h4>
+
+
+
+</body>
+
+</html>

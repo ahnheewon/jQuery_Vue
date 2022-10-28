@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+<body>
+    <button type="button" id="btn">버튼</button>
+    <script>
+        // JQuery 태그에 이벤트 달기!!!!!!!!!!!!!!!!
+
+        /*
+        //단일 이벤트 등록
+        $('#btn').on('click', function(){
+            $('body').append('<p>on 단일 이벤트 등록</p>');
+        });
+
+        $('#btn').click(function(){
+          $('body').append('<p>on 단일 이벤트 등록<br>(메소드를 통해)</p>');
+        })
+        //그룹 이벤트 등록
+        $('#btn').on('click mouseover',function(){
+            $('body').append('<p>그룹 이벤트 등록 : 동일한 핸들러</p>');
+        })
+        */
+        $('#btn').on({
+            "click" : function(){alert("그룹 이벤트로 click 이벤트 등록")},
+            "mouseover" : function(){ $('body').append('<p>그룹 이벤트로 등록 </p>')}
+        });
+
+    </script>
+</body>
+</html>

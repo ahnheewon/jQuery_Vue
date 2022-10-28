@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <h1>간단한 계산기</h1>
+        <input type="number"  v-model.number= "number1"> <br>
+        <input type="number"  v-model.number= "number2"> <br>
+        <button v-on:click="plus">덧셈계산</button>
+        <button v-on:click="minus">뺄셈계산</button>
+        <button v-on:click="multi">곱셈계산</button>
+        <button v-on:click="divide">나눗셈계산</button>
+        <p>출력 결과는 {{ result }} 입니다.</p>
+    </div>
+</body>
+<script>
+
+    new Vue({
+        el:('#app'),
+        data : {
+                  number1 :0,
+                  number2 :0,
+                   result :0
+                },
+        methods : {
+            plus : function(){ // vue el안에 있는 요소에만 사용 가능.
+                  this.result=this.number1+this.number2;
+                  // this 안붙이면 result를 못불러옵니다.
+                  // vue에서는 this.data.result에서 this.result 줄여준것.        
+                },
+            minus : function(){ // vue el안에 있는 요소에만 사용 가능.
+                
+                if(this.number2 > this.number1){
+                this.result=this.number2-this.number1; }
+                else this.result=this.number1-this.number2; 
+                    
+                }, 
+            multi : function(){ // vue el안에 있는 요소에만 사용 가능.
+                this.result=this.number1*this.number2; 
+                    
+                },
+            divide : function(){ // vue el안에 있는 요소에만 사용 가능.
+                
+                if(this.number2 > this.number1){
+                this.result=this.number2/this.number1; }
+                else this.result=this.number1/this.number2; 
+                    
+                }
+            
+                
+                }
+
+
+    })
+
+
+</script>
+</html>

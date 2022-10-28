@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="wrap">
+        <p>
+            <a href="https://jquery.com" target="_blank">jQuery</a>
+        </p>
+
+        <p>
+            <a href="https://www.naver.com" target >naver</a>
+        </p>
+
+        <p>
+            <a href="https://www.daum.net" >daum</a>
+        </p>
+
+        <p>
+            <a href="www.google.co.kr">google</a>
+        </p>
+        <form action="#" method="get" id="member_f">
+            <p>
+                <label for="user_id">아이디</label>
+                <input type="text" name="user_id" id="user_id">
+            </p>
+            <p>
+                <label for="user_pw">비밀번호</label>
+                <input type="password" name="user_pw" id="user_pw">
+            </p>
+        </form>
+    </div>
+    <script>
+        //속성 검색 []
+
+        //a 태그 중 target 속성이 존재하는 요소만
+        $('#wrap a[target]').css('color','#f00');
+        $("#wrap a[target='_blank']").css('border','1px solid black');
+
+        //a 태그 중 href 속성의 값이 https로 시작되는 요소만
+        $('#wrap a[herf^=https"]').css('color','green'); // ^= 시작하는 값
+
+        //a 태그 중 href 속성의 값이 net으로 끝나는 요소만
+        $('#wrap a[herf$=net"]').css('color','orange'); // $= 끝나는 값
+
+        //a 태그 중 href 속성의 값이 goolge이 포함되는 요소만
+        $('#wrap a[herf*=goolge"]').css('color','skyblue'); // *= 포함하는
+
+        //input type 속성 값으로 검색
+
+        //$('#member_f input[type="text"]').css('background-color','gray'); // input의 type이 text
+        $('#member_f :text').css('background-color','gray');
+        $('#member_f :password').val('비밀번호를 입력하세요'); //암호화 되어서 출력됨.
+
+    </script>
+
+</body>
+
+</html>

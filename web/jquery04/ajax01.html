@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+</head>
+<body>
+    <script>
+        /*
+            $.ajax({
+                //접속할 주소
+                url : ,
+
+                //데이터를 전송하는 방식(get,post)
+                type : ,
+
+                //전송할 데이터
+                data : ,
+
+               
+
+                //전송할 데이터 content-type : application/x-www-form-urlencoded
+                contentType : ,
+
+                //리턴되는 데이터의 타입
+                dataType : ,
+
+                *반환되는 데이터 잘 모르겠다 싶으면 console.log();
+
+                //전송에 성공했을 경우
+                success : function(data){
+
+                },
+
+                //전송에 실패했을 경우
+                error : function(reject){
+
+                } -> 생략하지마라!, 굉장히 중요 
+                
+            })
+
+        */
+        
+    </script>
+
+    <div id="content"></div>
+
+    <script>
+       // jQuery 바로 ajax로 처리하는 방법
+        $.ajax({
+            url : 'http://192.168.0.10:8081/myserver/empSelect', //필수
+           // type : // type default는 get (생략가능)
+           dataType : 'json',
+           success : function(data){
+            console.log(data); // 성공하면 데이터 출력!
+             // data -> [{},{},{},...,{}]
+             // 테이블 생성
+             let tb = $('<table style="border:2px solid"/>');
+             // 테이블 헤더 생성(보류)
+             let trTag = $('<tr/>');
+             let header =data[0]; //header 배열로 선언
+             
+             /* let header =data[0]; 이런 식으로 하면.
+              순서가 맘대로 출력되는데 원하는 순서가  있으면 
+              let header=["employee_id","first_name",...,"department_id"];
+              이렇게 작성하면 됩니다. 
+              
+              ※대신 for(let field in header) 사용 불가 (for ~ in...은 배열)
+              ※for(let field of header)로 해야함. (for ~ of...는 객체)*/
+
+             for(let field in header){
+                let th = $('<th style="border:1px solid"/>').text(field);
+                $(trTag).append(th);
+             }
+             $(tb).append(trTag);
+            
+
+             // 테이블 각 행 구성 -> 행 = {}
+            $(data).each(function(idx,obj){
+                let tr = $('<tr/>');
+
+                // 행 안의 td들을 구성
+                for(let field in header){
+                    let td = $('<td style="border:1px solid"/>').text(obj[field]);
+                    
+                    if(field == "last_name"){
+                        $(td).prop('class','name');
+                    }
+                    $(tr).append(td);
+                }
+                $(tb).append(tr);
+            });
+
+             // div 태그에 테이블 append
+            $('#content').append(tb);
+
+
+            //이벤트를 만들거면 이 뒤에 만들어야 합니다.
+            
+            $('#content > tb td').click(function(e){
+                let currentTag = this
+                // 1)
+                let trTag = $(currentTag).parent().find('td.name');
+                console.log(nameTag.text());
+
+                // 2)
+                let headerTag = $(currentTag).parent().siblings('tr:has(th)'); 
+                let index = headerTag.children().index($('th:contains("last_name")'));
+                let name = $(currentTag).parent().children().eq(index).text();
+                console.log(name);
+                 //siblings는 본인은 포함 안합니다. 그래서 이름은 이런식으로..
+              
+            });
+
+        },
+           
+
+               /* 내 풀이ㅠㅠㅠㅠㅠㅠ 
+                 let tb = $('<table style="border:2px solid"></table>'); 
+                $(data).each(function(index,data){
+                let tr = tb.prepend('<tr/>');
+                tr.text('부서번호');
+               tb.append(tr);
+                let th = $('<th/>').text(data["department_id"]);
+                tr.append(th);
+                th = $('<th/>').text(data["manager_id"]);
+                tr.append(th);
+                th = $('<th/>').text(data["commission_pct"]);
+                tr.append(th);
+                th = $('<th/>').text(data["salary"]);
+                tr.append(th); }); 
+                 tb.append()
+                $('#content').append(tb);*/           
+               
+
+       
+           error : function(reject){
+            console.log(reject);  // 실패하면 reject 출력!
+           }
+        });
+
+        // ajax는 비동기식
+        // 응답이 올 때까지 기다리지 않는다.
+        
+        //alert("안내문구!");
+    </script>
+</body>
+</html>

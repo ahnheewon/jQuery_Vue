@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>  
+    <div>
+        <label for="empId"></label>
+        <input type="number" id="empId" name="employee_id">
+        <button type="button" id="selectBtn">조회</button>
+    </div>
+<br>
+    <div>
+    <!-- 입력/수정/삭제 -->
+    <form id="info" onsubmit="return false">
+        <div>
+            <label for="id">사원번호</label>
+            <input type="number" id="employee_id" name="employee_id">
+        </div>
+        <div>
+            <label for="last_name">성</label>
+            <input type="text" id="last_name" name="last_name">
+        </div>
+        <div>
+            <label for="first_name">이름</label>
+            <input type="text" id="first_name" name="first_name">
+        </div>
+        <div>
+            <label for="email">이메일</label>
+            <input type="text" id="email" name="email">
+        </div>
+        <div>
+            <label for="job_id">직책</label>
+            <input type="text" id="job_id" name="job_id">
+        </div>
+        <br>
+        <button type="button" id="insertBtn">등록</button>
+        <button type="button" id="updateBtn">수정</button>
+        <button type="button" id="deleteBtn">삭제</button>
+        <br>
+        <br>
+    </form>
+    </div>
+
+    <div id="content">
+        <!-- 전체 조회/해당 사원 정보조회 -->    
+    </div>
+<br>
+    <div>
+
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            // 페이지 안에서 동작하는 코드\  
+            $('#selectBtn').click(selectEmployee);
+            $('#insertBtn').click(insertEmployee);
+            $('#updateBtn').click(updateEmployee);
+            $('#deleteBtn').click(deleteEmployee);
+
+          //  allEmployee1();
+            allEmployee2();
+            $('#job_id').on('focus',selectJobs());
+
+        });      
+
+
+   // 전체조회
+
+    // 헤더를 임의로 구성하는 방식 (이름 지어서)
+    function allEmployee1(){
+        $('#info input').val(''); //기존의 입력폼 삭제!
+        $('div:last').empty();
+        $.ajax({
+            url : 'http://192.168.0.10:8081/myserver/empSelect', //필수
+           // type : // type default는 get (생략가능)
+           dataType : 'json',
+           success : function(data){
+            console.log(data); // 성공하면 데이터 출력!
+             // data -> [{},{},{},...,{}]
+            
+             // 테이블 태그 생성
+             let tb = $('<table style="border:2px solid"/>');
+
+             // 테이블 헤더 생성(보류)
+             let trTag = $('<tr/>');
+             let header ={"사원번호" : "employee_id", 
+                            "성" : "last_name",
+                            "이름" : "first_name",
+                            "이메일" : "email", 
+                            "연락처" : "phone_number",
+                            "입사일" : "hire_date",
+                            "직업" : "job_id",
+                            "급여" :  "salary",
+                            "상여" : "commission_pct",
+                            "관리자" : "manager_id",
+                            "부서" : "department_id"};
+
+                //DB AS 처럼 이름을 붙이고 싶을 때 이렇게 합니다.
+                // 이건 배열이 아니라 객체입니다.
+
+             for(let field in header){
+                let th = $('<th style="border:1px solid"/>').text(field);
+                $(trTag).append(th);
+             }
+             $(tb).append(trTag);
+            
+             // 테이블 바디
+             // object -> 한 행
+             // 테이블 각 행 구성 -> 행 = {}
+            $(data).each(function(idx,obj){
+                let tr = $('<tr/>');
+
+                // 행 안의 td들을 구성
+                for(let field in header){ // in은 객체 of는 배열
+                    let column = header[field];
+                    // field : "사원번호"
+                    // header[field] -> header["사원번호"] = "employee_id" -> column
+                    // obj[column] -> obj["employee_id"]
+                    
+                    let td = $('<td style="border:1px solid"/>').text(obj[column]);
+                    
+                    if(field == "last_name"){
+                        $(td).prop('class','name');
+                    }
+                    $(tr).append(td);
+                } // 왜 for문 안에 td가 있는 구조인지 이해하기.
+
+                $(tb).append(tr); 
+            });
+
+             // 기존의 태그에 추가
+            $('#content').append(tb);
+
+
+            //이벤트를 만들거면 이 뒤에 만들어야 합니다.
+            
+            $('#content > tb td').click(function(e){
+                let currentTag = this
+                // 1)
+                let trTag = $(currentTag).parent().find('td.name');
+                console.log(nameTag.text());
+
+                // 2)
+                let headerTag = $(currentTag).parent().siblings('tr:has(th)'); 
+                let index = headerTag.children().index($('th:contains("last_name")'));
+                let name = $(currentTag).parent().children().eq(index).text();
+                console.log(name);
+                 //siblings는 본인은 포함 안합니다. 그래서 이름은 이런식으로..
+              
+            })},
+            error : function(reject){
+            console.log(reject);  // 실패하면 reject 출력!
+           }
+        })
+    }
+
+    // 객체의 필드를 그대로 헤더로 만드는 방식
+    function allEmployee2() {
+            $('#info input').val('');  //기존의 입력폼 내용삭제- value속성을 공백으로 덮어씌움
+            $('div:last').empty(); //기존의 태그들을 남겨두고 하위 요소들을 삭제
+
+            $.ajax({
+                url: 'http://192.168.0.2:8081/myserver/empSelect',
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+
+                    // 테이블
+                    let table = $('<table border="1"/>');
+
+                    // 헤더
+                    let tr = $('<tr/>');
+                    let header = ["employee_id", 
+                                    "last_name",             
+                                    "first_name",    
+                                    "email", 
+                                    "phone_number", 
+                                    "hire_date", 
+                                    "job_id", 
+                                    "salary",
+                                    "commission_pct", 
+                                    "manager_id", 
+                                    "department_id"]
+
+                    for (let field of header) {
+                        let th = $('<th/>').text(field);
+                        $(tr).append(th);
+                    }
+                    $(table).append(tr);
+    
+                    // 기존의 태그에 추가 -> DOM tree에 등록
+
+                    // 바디
+                    $(data).each(function (idx, obj) {
+                        let tr = $('<tr/>');
+
+                        for (let field of header) {
+                            let td = $('<td/>').attr('name', field).text(obj[field]);
+                            $(tr).append(td);
+                        }
+                        $(table).append(tr);
+                    })
+                    
+                    $('div:last').append(table);
+                    $('div:last td').on('click',selectEmployee);
+                },
+                error: function (reject) {
+                    console.log(reject);
+                }
+            });
+        }
+   
+   // 단건조회 -> 선택한 사원의 정보를 form에 출력하기
+   // 1) 선택한 행의 모든 td를 form에 출력
+   // 2) 선택한 사원의 employee_id를 이용 -> 비동기 통신
+
+   function selectEmployee(){
+
+       // 1) 선택한 행의 모든 td를 form에 출력
+        let arrOfTd = $(this).parent().children(); // td에서 tr로 올라가서(parent) children이용해서 모든 테이블정보
+        arrOfTd.each(function(idx,element){
+            let name = $(element).attr('name');
+            $('#'+name).val($(element).text());
+        });
+
+       // 2) 선택한 사원의 employee_id를 이용 -> 비동기 통신
+
+        let empId= $(this).parent().find('td[name="employee_id"]').text(); // td에서 tr로 올라가서(parent) 하위요소중에 찾는 find()
+        // 내가 선택한 사원의 id값 획득!
+
+        $.ajax({
+            url : 'http://192.168.0.2:8081/myserver/empFind',
+            //  type : get 생략
+            //  data : {"employee_id" : $('#empId').val()},
+            data : {"employee_id" : empId }, // 2)번 방식 이용
+            dataType : 'json',
+            success : function(data){
+                if(data != null){
+                for(let field in data){ // 객체는 in!
+                    let selector = '#'+field;
+                    console.log(typeof selector, selector);
+                    $(selector).val(data[field]);
+                    $('#employee_id').prop('readonly', true);
+                }
+            }
+
+                /* 이건 노가다 방식
+            $('#employee_id').val(data.employee_id);
+            $('#last_name').val(data.last_name);
+            $('#first_name').val(data.first_name);
+            $('#email').val(data.email);
+            $('#job_id').val(data.job_id); */
+                    
+                },
+            error : function(reject){
+                    console.log(reject);
+           }
+        });
+       }
+
+
+        // 등록
+        function insertEmployee(){
+
+            $.ajax({
+                url :'http://192.168.0.2:8081/myserver/empInsert',
+                type : 'post', // get은 모든사람한테 open, 보안이 취약하다
+                                // 절대 조회 이외에는 post 사용!
+               // data : {"employee_id" : $('#empId').val()},
+               
+               data : $('#info').serialize(),
+               /* serialize를 해주면 form안에 값들을
+                한 번에 전송 가능한 data로 만들 수 있어 많은 data를 보낼 때 유용하다.*/
+                
+                success : function(data){
+                    if(data != null) {
+                        alert('정상적으로 등록되었습니다.');
+                        //1) 재통신
+                        $('#employee_id').prop('readonly', false);
+                        allEmployee2();
+                        //등록정보 -> 테이블에 추가
+                    }
+                    //단순히 비동기통신이 성공했다는 메세지로,
+                    //예외처리가 처리될 수 있음.
+                },
+                error : function(reject){
+                    console.log("통신 실패!");
+                }
+
+            })
+        }
+        // 수정
+
+        
+     function updateEmployee(){
+        $.ajax({
+            url : 'http://192.168.0.2:8081/myserver/empUpdate',
+                type : 'post', // 정보에 관해서
+                data : $('#info').serialize(),
+              // serialize() -> name1 = value1&name2 = value2&name3 = value3... 
+                // 다량을 보낼 때는 이렇게
+                /* 
+                data : { "employee_id" : $('#employee_id').val(),
+                       "first_name" : $('#first_name').val()
+                    }, // 한 두개 보낼 때는 이렇게
+                */
+                success : function(data){
+                    if(data != null) {
+                        alert('수정이 완료되었습니다.');
+                        $('#employee_id').prop('readonly', false);
+                        //1) 재통신
+                        allEmployee2();
+                        //등록정보 -> 테이블에 추가
+                    }
+                    console.log(data);
+                },
+                error : function(reject){
+                    console.log(reject);
+                }
+       })}
+        
+        // 삭제
+        
+        function deleteEmployee(){
+        $.ajax({
+            url : 'http://192.168.0.2:8081/myserver/empDelete',
+            type : 'post',
+            data : {"employee_id" : $('#employee_id').val()},
+            dataType : 'json',
+            success : function(data){
+                    console.log(data);
+                    if(data != null) {
+                        alert('삭제 완료되었습니다.');
+                        $('#employee_id').prop('readonly', false);
+                        //1) 재통신
+                        allEmployee2();
+                        //등록정보 -> 테이블에 추가
+                    }
+                
+                },
+                error : function(reject){
+                    console.log(reject);
+                    alert("삭제 실패!");
+                }
+        })
+        }
+
+        // 직책과 관련된 select 추가
+        function selectJobs(){
+            $.ajax({
+                url:'http://192.168.0.2:8081/myserver/empDeptJob',
+                dataType:'json',
+                success : function(data){
+                    let jobs = data['jobs'];
+                    
+                    let select = $('<select/>');
+                    $(jobs).each(function(idx,obj){
+                        let option = $('<option/>').text(obj['job_title']).val(obj['job_id']); // text는 보여주는 값, value는 넘겨주는 값
+                        $(select).append(option);
+                    });
+
+                    $('#job_id').after(select);
+
+                    $('select').on('change',function(){
+                        let selected = $(':selected').val();
+                        $('#job_id').val(selected);
+                        $('#job_id').prop('readonly', true);
+                    })
+                },
+                error : function(reject){
+                    console.log(reject);
+                }
+            })
+        }
+// 비동기의 경우는 등록했을때 F5를 눌러줘야하는 번거로움이 있다....
+// 서버에서 등록성공이라는 메세지를 받으면 그걸 이용해서 새롭게 행을 만들어도 된다.
+// 하지만 정렬이 깨지기 때문에 위험한 방법이다.
+
+    </script>
+</body>
+</html>

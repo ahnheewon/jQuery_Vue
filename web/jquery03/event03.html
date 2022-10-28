@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+</head>
+<body>
+    <h2>Test</h2>
+    <ul class="test">
+
+        <li><a href="#">선택1</a></li>
+        <li><a href="#">선택2</a></li>
+        <li><a href="#">선택3</a></li>
+
+    </ul>
+    <p class="idxNum"></p>
+
+    <script>
+
+        //event 객체
+        $('.test a').on('click',function(event){
+            let tagInfo = event.currentTarget;
+            $('p.idxNum').text($(tagInfo).text());
+        });
+
+        //this
+        $('.test a').click(function(e){
+          // this = event.currentTarget
+          console.log(this);
+            $('p.idxNum').text(this);
+        })
+
+        //
+
+        /* 나의 풀이 ㅠㅠ
+         $('.test > li:first a').on('click',function(e){ 
+             $(this).text('선택1 선택하셨습니다.');
+         });
+        
+         $('.test > li a:contains(선택2)').on('dblclick',function(e){ 
+             $(this).text('선택2 선택하셨습니다.');
+         });
+        
+         $('.test > li a:contains(선택3)').on('click',function(e){ 
+             $(this).css({'border' : '1px solid black', 'background-color' : 'pink'});
+         }); */
+
+    </script>
+
+</body>
+</html>

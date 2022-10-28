@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <style>
+        .aqua {background-color: aqua;}
+        .red {background-color: red;}
+        .green {background-color: green;}
+        .yellow {background-color: yellow;}
+    </style>
+</head>
+<body>
+    <div id="ex01">
+        
+        <h1>
+            <strong>객체 조작 및 생성</strong>
+        </h1>
+
+        <section id="sec_1">
+            <h2>
+                <em>html()</em>
+            </h2>
+            <p>내용1</p>
+        </section>
+
+        <section id="sec_2">
+            <h2>
+                <em>text()</em>
+            </h2>
+            <p>내용2</p>
+        </section>
+    </div>
+
+    <script>
+
+        // html() -> 태그의 모든 하위요소를 가져와서 문자열로 반환.
+        let result1 = $('#sec_1').html();
+        console.log(result1);
+        $('#sec_1 p').html('<a href="#">text1<a>');
+
+        // text() -> 태그의 모든 텍스트 반환.
+        let result2 = $('#sec_2').text();
+        console.log(result2);
+        $('#sec_2 p').text('<a href="#">text2<a>'); // $('#sec_2').text() 이렇게 하면 내부 구조 상관없이 뭉개버림.
+
+        //val()
+
+        //css() -> style 속성 // css('color','red') :값을 줄 때 이런 식으로 많이 해봤는데, 단일 속성 말고도
+                            // css({"color" : "red", "background-color" : "skyblue"}) 이런식으로 객체로 많이 넘길 수 있다.
+        
+ </script>
+
+ <div id="ex02">
+
+    <p id="p1">내용1</p>
+    <p id="p2" class="red">내용2</p>
+    <p id="p3">내용3</p>
+    <p id="p4" class="green">내용4</p>
+    <p id="p5" class="yellow">내용5</p>
+    <p id="p6"></p>
+
+</div>
+
+<script>
+    // class 속성 : 복수의 값
+    // addClass() -> class 속성에 지정한 값을 추가
+    $('#p1').addClass('aqua');
+
+    // removeClass() -> class 속성에 해당 값을 삭제
+    $('#p2').removeClass('red'); 
+
+    // toggleClass() -> class 속성에 해당 값이 존재하면 삭제, 없으면 생성
+    $('#p3').toggleClass('green'); 
+    $('#p4').toggleClass('green'); 
+
+    // hasClass() -> class 속성에 해당 값이 존재는 유무를 확인 (boolean)
+    let result3 =$('#p5').hasClass('yellow');
+    $('#p6').text(result3);
+</script>
+
+<div id="ex03">
+    <h1>
+        <strong>객체 조작 및 생성</strong>
+    </h1>
+    <section id="sec01">
+        <h2>
+            <img src="../해바라기.PNG" alt="이미지" border="2">
+        </h2>
+    </section>
+    <a id="get_comment" href="#comments">코멘트</a>
+    </div>
+
+    
+    <!-- html에서는 attribute(값이 변하지 않음.) DOM에서는 property(값이 변함.) -->
+
+    <script>
+        //attr() -> html의 attribute를 조작
+       /*
+        let var1 = $('#sec01 img').attr('src');
+        console.log(var1);
+
+        $('#sec01 img').attr('width',200);
+        $('#sec01 img').attr({
+            "alt" : "꽃",
+            "height" : 100
+        });
+
+        $('#sec01 img').removeAttr('src');
+        */
+
+        //prop() -> DOM property를 조작
+        let var1 = $('#sec01 img').prop('src');
+        console.log(var1);
+
+        $('#sec01 img').prop('width',200);
+        $('#sec01 img').removeProp('width');
+
+        console.log('attr : ',$('#get_comment').attr('href') );
+        console.log('attr : ',$('#get_comment').prop('href') );
+    </script>
+
+<div id="ex04">
+    <form action="#" id="form_1">
+        <div>
+            <label for="chk1">체크1</label>
+            <input type="checkbox" name="chk1" id="chk1">
+            <label for="chk2">체크2</label>
+            <input type="checkbox" name="chk2" id="chk2" checked>
+            <label for="chk3">체크3</label>
+            <input type="checkbox" name="chk3" id="chk3">
+        </div>
+        <div>
+            <select name="select_1" id="select_1">
+                <option value="opt1">옵션1</option>
+                <option value="opt2">옵션2</option>
+                <option value="opt3" selected>옵션3</option>
+            </select>
+        </div>
+    </form>
+</div>
+<script>
+   $('#chk2').prop('checked', false);
+   let checkVal = $('#chk2').prop('checked');
+   console.log('prop : ', checkVal);
+
+   checkVal = $('#chk2').attr('checked');
+   console.log('attr : ', checkVal);
+
+   let selectVal = $('#select_1').prop('selectedIndex');
+   console.log(selectVal);
+</script>
+</body>
+</html>

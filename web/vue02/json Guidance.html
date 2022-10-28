@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.13/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        $.ajax({
+            url : 'board.json',
+            dataType : 'json', // 자동 타입 인식.
+            success : function(data){
+
+            console.log(data);
+
+            console.log(typeof data);
+            console.log(typeof data.board);
+            console.log(data['board'][0]);
+
+            const data1 = data.board[0]
+            console.log(data1);
+            console.log(data1.no,data1.title,data1.content);
+            console.log('==============================');
+
+        },
+            error : function(reject){
+                    console.log(reject);
+                }
+            });
+
+
+        
+// JS 방식
+// 1) promise (어려움)
+// https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise
+// 2) fetch (비동기 방식 - 쉬움)
+// https://developer.mozilla.org/ko/docs/Web/API/Fetch_API/Using_Fetch
+
+// fetch로 해보겠습니다.
+    fetch('board.json')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        console.log(data.board[0]);
+        console.log('==============================');
+    })
+    .catch(err => console.log(err));
+
+
+    </script>
+</body>
+</html>

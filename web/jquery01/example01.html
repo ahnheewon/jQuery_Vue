@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+<body>
+   
+<form id="info">
+
+<div>
+<label for="user_name">이름</label>
+<input type="text" name="user_name" id="user_name">
+</div>
+    <div>
+        <label for="user_dept">소속</label>
+        <select name="user_dept" id="user_dept">
+            <option value="student">학생</option>
+            <option value="teacher">교수</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="user_hobby">취미</label>
+        <input type="checkbox" name="user_hobby" value="독서">독서
+            <input type="checkbox" name="user_hobby" value="영화" checked>영화
+            <input type="checkbox" name="user_hobby" value="게임" checked>게임
+    </div>
+    
+    <button type="button" name="input" id="input" >등록</button>
+
+</form>
+
+<div id="show">
+    <table style="border: 1px solid black;">
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>소속</th>
+                <th>취미1</th>
+                <th>취미2</th>
+                <th>취미3</th>
+            </tr>
+        </thead>
+
+        <tbody id="what">        
+             
+        </tbody>
+        
+    </table>
+</div>
+
+
+    <script>
+
+        // button태그에 onclick="jsEvent()" 대신
+        document.addEventListener('DOMContentLoaded',function(){
+        document.getElementById('input').addEventListener('click',jqEvent); //event리스너 추가
+        })
+
+        function jsEvent(){
+            // 입력 폼의 정보를 검색
+            let name=document.getElementById('user_name').value;
+            let select= document.getElementById('user_dept');
+            let dept = select.options[select.selectedIndex].textContent;
+                                            // select 태그에서 선택된 인덱스
+            let hobbies = document.querySelectorAll('input[name="user_hobby"]:checked');
+                                            // 모든 input태그 중에 name이 user_hobby이고 checked인 것.
+            
+            // 정보를 기반으로 한 행 생성
+            
+            let tr = document.createElement('tr');
+
+            // 1) 이름
+            let td = document.createElement('td');
+            td.textContent=name;
+            tr.appendChild(td);
+        
+            // 2) 소속
+            td = document.createElement('td');
+            td.textContent=dept;
+            tr.appendChild(td);
+
+            // 3) 취미
+            for(let i=0; i<3; i++){ // index : 0, 1, 2
+            td = document.createElement('td');
+
+            //문제가 생기는 부분은 if절로 처리!
+            if(i < hobbies.length){ 
+            // hobbies.length : 2 라면.. index => 0, 1 길이가 안맞다
+            td.textContent=hobbies[i].value;
+            } 
+            tr.appendChild(td);
+           
+            }
+
+            // 행을 테이블에 등록
+            document.getElementsByTagName('tbody')[0].appendChild(tr);
+
+        }
+   
+        function jqEvent(){
+            // 입력 폼의 정보를 검색
+            let name=$('#user_name').val();
+            let dept = $('#user_dept :selected').text();
+            let hobbies = $('#info > div:last :checked');
+            
+            // 정보를 기반으로 한 행 생성
+            
+            let tr = document.createElement('tr');
+
+            // 1) 이름
+            let td = document.createElement('td');
+            td.textContent=name;
+            tr.appendChild(td);
+        
+            // 2) 소속
+            td = document.createElement('td');
+            td.textContent=dept;
+            tr.appendChild(td);
+
+            // 3) 취미
+            for(let i=0; i<3; i++){ // index : 0, 1, 2
+            td = document.createElement('td');
+
+            //문제가 생기는 부분은 if절로 처리!
+            if(i < hobbies.length){ 
+            // hobbies.length : 2 라면.. index => 0, 1 길이가 안맞다
+            td.textContent=hobbies[i].value;
+            } 
+            tr.appendChild(td);
+           
+            }
+
+            function jqEvent2(){
+            // 입력 폼의 정보를 검색
+            let name=$('#user_name').val();
+            let dept = $('#user_dept :selected').text();
+            let hobbies = $('#info > div:last :checked');
+            
+            // 정보를 기반으로 한 행 생성
+            
+            let tr = $('<tr/>');  // -> Element Node
+            // id 설정도 따로 가능
+
+            // 1) 이름
+            tr.append(
+                $('<td/>').text(name) // td태그 생성 후 text 속성 값에 name 변수 넣기 -> 그 후 tr로 감싸기
+            );
+        
+            // 2) 소속
+           tr.append($('<td/>').text(dept));
+
+            // 3) 취미
+            for(let i=0; i<3; i++){ // index : 0, 1, 2
+            let td=$('<td/>'); //태그생성.
+
+            //문제가 생기는 부분은 if절로 처리!
+            if(i < hobbies.length){   // hobbies.length : 2 라면.. index => 0, 1 길이가 안맞다
+                $(td).textContent=hobbies[i].value;
+                } 
+            $(tr).append(td); // jQuery는 appendChild 안됨.. 노드처리라서
+           
+            }
+
+            // 행을 테이블에 등록
+            $('tbody:first').append(tr); // jQuery는 appendChild 안됨.. 노드처리라서
+
+        }}
+    </script>
+
+</body>
+
+</html>

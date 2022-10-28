@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="wrap">
+        <div id="inner_wrap">
+
+            <h1>제목1</h1>
+            <h2>제목2</h2>
+            <h3>제목3</h3>
+            <p>내용</p>
+             <div>
+                    <h1>하위 요소1</h1>
+                    <h2>하위 요소2</h2>
+             </div>
+        </div>
+    </div>
+
+<script>
+    //부모 선택자
+    $('#inner_wrap').parent().css('border','1px solid black');
+
+    //하위 요소 선택자
+    $('#wrap h1, h2').css('color','blue'); // ,를 쓰는건 동급끼리 쓴다.
+
+    //자식 요소 선택자
+    $('#inner_wrap > h1').text('자식 요소로 선택');
+    $('#inner_wrap').children('h2').text('children() 함수 사용'); // 자식 중에 h2 태그인..
+
+    $('div > h1').css('color','yellow'); 
+
+</script>
+
+    <div id="content">
+
+        <h1>인접 관계 선택자</h1>
+        <p>내용</p>
+        <p class="txt">내용2</p>
+        <p>내용3</p>
+        <p>내용4</p>
+        <span>추가한 내용</span>
+
+    </div>
+
+    <script>
+        //형(이전) 요소 선택자
+        $('.txt').prev().css('background-color','#0ff')
+                        .css('border','2px solid #f00');
+        $('.txt').prevAll().text('이전 요소들'); // 내 앞에 전부
+        $('.txt').prevUntil('h1').css('border','10px solid green'); // h1태그 전까지
+
+        //동생(이후) 요소 선택자
+        $('.txt').next().next().css('color','red'); // .txt 기준 그 다음 다음 태그
+        $('.txt').nextAll().text('다음 요소들'); // .txt 기준 그 다음 다음 태그
+        
+        $('.txt + p').text('선택'); // +는 다음 요소중의 바로 인접한 요소를 가리킴.
+        $('.txt').nextUntil('span').css('border','10px solid skyblue'); // 지정한 곳 전까지
+    </script>
+
+    <div>
+        <h1 class="title">선택자</h1>
+    
+        <section>
+            <div>
+                <p class="txt1">내용</p>
+            </div>
+        </section>
+
+        <section>
+            <div>
+                <p class="txt2">내용</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        //상위 요소 선택자
+        $('.txt2').parents('section').css('border','3px solid yellow');
+
+        //가장 가까운 상위 요소 선택자
+        $('.txt1').closest('div').css('border','2px solid blue');
+
+        //전체 형제 요소 선택자
+        $('h5').siblings().css('background-color','pink');
+    </script>
+
+</body>
+
+</html>

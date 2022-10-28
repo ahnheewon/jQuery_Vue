@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+</head>
+<body>
+    <p>
+        <img src="http://place-hold.it/300X300" class="img1">
+    </p> 
+
+    <script>
+        //ready -> html 문서 로딩이 완료된 후에 동작
+        $(document).ready(function(){
+            let h1 = $('.img1').height();
+            console.log('ready : ', h1);
+        })
+        //load -> 외부에 연동된 코드(iframe, img, video)의 로딩이 완료된 후에 동작.
+        $(window).on('load',function(){ //전역변수 window
+            let h2 = $('.img1').height();
+            console.log('load: ', h2);
+        })
+    </script>
+</body>
+</html>

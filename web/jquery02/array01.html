@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="ex01">
+        <h1>배열 메서드</h1>
+        <ul id="menu1">
+            <li>내용1-1</li>
+            <li>내용1-2</li>
+            <li>내용1-3</li>
+        </ul>
+        <ul id="menu2">
+            <li>내용2-1</li>
+            <li>내용2-2</li>
+            <li>내용2-3</li>
+        </ul>
+    </div>
+    <script>
+        let obj = [
+        {"area" : "서울"}, 
+        {"area" : "부산"}, 
+        {"area" : "전주"}
+    ];
+
+    //each() -> 배열에 대해 순환
+    
+    let ulTag = $('<ul/>');
+    $(obj).each(function(index,object){
+        let liTag = $('<li/>').text(object["area"]);
+        ulTag.append(liTag);
+    });
+
+    $('#ex01').append(ulTag);
+
+    console.log("===================");
+    $.each(obj,function(idx,obj){ // each 사용할 배열 선언 후 함수 적기.
+        console.log(idx + " : " , obj);
+        // +를 사용하면, obj는 객체라서 강제로 String으로 변환시킴..
+        // 그래서 , 를 씁니다
+    });
+
+    console.log("===================");
+    $('#menu1 li').each(function(idx,tag){
+        console.log(idx,tag.textContent); // tag.textContent 이런식으로 사용 가능.
+        console.log(idx + " : ", $(tag).text()); // 아니면 이렇게 표현도 가능.
+    });
+
+    console.log("===================");
+    $.each($('#menu2 li'), function(idx,tag){
+        console.log(idx,tag.textContent); // 위에 꺼랑 결과는 같다.
+        console.log(idx + " : ", $(tag).text());
+    });
+
+    console.log("===================");
+    $('#ex01 li').each(function(idx){
+        console.log(idx+" : ", $(this).text());
+        // this는 어디서 사용하느냐에 따라 내용이 달라진다.
+        // this를 사용할 때 어디서 호출하느냐가 중요.
+        // this를 jQuery로 사용하려면 $로 감싸면 됨.
+    });
+
+    // function fun1(){
+    //     this -> window를 가리킴.
+    // }
+
+    </script>
+
+    <script>
+        let arr1 = [
+        {"area" : "서울", "dept" : "영업", "name" : "무대리"},
+        {"area" : "부산", "dept" : "영업", "name" : "홍과장"},
+        {"area" : "대전", "dept" : "생산", "name" : "박사장"},
+        {"area" : "서울", "dept" : "생산", "name" : "김부장"}
+        ]
+
+        //$.map() -> return 값만 가지고 새로운 배열을 만든다.
+        let arr2 = $.map(arr1, function(obj,idx){
+          if(obj.area == "서울"){
+            return obj;
+          }
+        })
+
+        arr2.forEach(function(obj,idx){
+            console.log(idx,obj);
+        })
+
+        $(arr2).each(function(obj,idx){
+            console.log(idx,obj);
+        })
+
+        console.log("==============")
+
+        //$.grep() -> 오름차순 정렬
+        let arr3 = $.grep(arr1,function(obj,idx){
+            if(obj.dept=="영업"){
+                return true;
+            } else{
+                return false;
+            }
+        });
+
+        $.each(arr3,function(idx , obj){
+            console.log(idx,obj);
+        })
+
+    </script>
+
+    <div id="ex02">
+        <!-- 지역 : 전주, 부서 : IT, 이름 : 박수훈 -->
+        <!-- 근무지역: 서울 -->
+        <ul></ul>
+        <!-- 부서 : 영업 -->
+        <ul></ul>
+        <!-- 부서 : 생산 -->
+        <ul></ul>
+    </div>
+
+    <script>
+        // 중복코드 제거
+        function appendTag(tag,datas){
+            $(datas).each(function(idx,obj){
+                let liTg = $('<li/>');
+                liTg.text(
+                    '지역: '+ obj.area +', 부서 : '+obj.dept+', 이름: '+ obj.name
+                        );
+                ulTg.append(liTg); // JQuery append
+        })
+
+        }
+        //1) 근무지역 : 서울
+
+        let areaDatas = $.map(arr1,function(obj,idx){
+            if(obj.area=="서울"){
+                return obj;
+            }
+        })
+
+        let ulTg = $('#ex02 ul:first');
+        /*
+        $(areaDatas).each(function(idx,obj){
+            let liTg = $('<li/>');
+            liTg.text(
+                '지역: '+ obj.area +', 부서 : '+obj.dept+', 이름: '+ obj.name
+            );
+            ulTg.append(liTg); // JQuery append
+        })*/
+        appendTag(ulTg,areaDatas);
+
+        //2) 부서 : 영업
+        let deptDatas = $.grep(arr1,function(obj,idx){
+            if(obj.dept == "영업"){
+                return true;
+            }else{
+                return false;
+            }
+        })
+
+        ulTg = ulTg.next();
+        //ulTg = $('#ex02 ul:first').next();
+
+        /*$(deptDatas).each(function(idx,obj){
+            let liTg = $('<li id="'+idx+'"">지역 : '+obj.area
+                        +', 부서 : '+obj.dept
+                        +', 이름'+obj.name+'</li>');
+            ulTg.append(liTg);
+        })*/
+        appendTag(ulTg,deptDatas);
+
+        // 3) 부서 : 생산
+        deptDatas = $.map(arr1,function(obj,idx){
+            if(obj["dept"]=="생산"){
+                return obj;
+            }
+        })
+
+        ulTg = ulTg.next();
+        /*$(deptDatas).each(function(idx,obj){
+            let liTg = $('<li/>').text(
+            '지역: '+ obj["area"] +', 부서 : '+obj["dept"]+', 이름: '+ obj["name"]
+            );
+
+            ulTg.append(liTg);
+        })*/
+        appendTag(ulTg,deptDatas);
+
+        /* ㅠㅠ내풀이...
+        
+        let ul = $('#ex02 > ul').first();
+
+         $(arr1).each(function(index,object){
+
+         let li = $('<li/>');
+
+         ul.append(li.text("지역 :",object["area"]),", 부서 : ",object["dept"],", 이름 : ",object["name"]);
+
+         $('#ex02').append(ul); });*/
+
+    </script>
+    
+    <script>
+        let arry1 = ["서울", "대전", "부산", "전주"];
+        let arry2 = ["한국", "미국", "일본", "중국"];
+
+        let obj1 = {"name" : "정부장", "area" : "서울"};
+
+        let arry3 = [
+            {"name" : "김대리", "area" : "대전"},
+            {"name" : "이사원", "area" : "부산"},
+            {"name" : "하부장", "area" : "전주"},
+            {"name" : "유전무", "area" : "서울"}
+        ];
+
+        //inArray() -> 배열 안에 데이터가 있다면 인덱스, 없다면 -1
+        if($.inArray("부산",arry1)!=-1){
+            //검색하고자 하는 데이터를 넣고, 그다음 찾아올 배열 입력
+            console.log("해당 데이터가 존재합니다.");
+        }
+
+        //isArray() -> 매개변수로 넘어온 값이 배열인지 확인함. (boolean)
+        console.log("arry2의 배열 여부 : ",$.isArray(arry2)); // 배열 -> true
+        console.log("obj1의 배열 여부 : ",$.isArray(obj1)); // 객체 -> false
+
+        //$.merge() -> 두개의 배열을 하나의 배열로 변환 :원본데이터가 손상된다.
+        // 첫 번째 매개변수로 넘어간 배열에 두번째 매개변수로 넘어가 배열을 추가
+       // $.merge(arry2, arry1);
+
+        $(arry2).each(function(idx,obj){
+            console.log(idx,obj);
+        })
+
+    </script>
+
+    <div id="ex03">
+        <div>
+            <h3>대한민국 도시</h3>
+        </div>
+        <div>
+            <h3>국가</h3>
+        </div>
+    </div>
+
+    <script>
+        //1) arry1 배열을 대한민국 도시 밑에 p태그로 추가
+        
+        $(arry1).each(function(idx,value){
+            let pTg = $('<p/>').text(value);
+            $('#ex03 > div:contains("도시")').append(pTg);
+        })
+        
+       /* 내풀이ㅠㅠ 
+        let pTag1 = $('<p/>');
+        pTag1.text(arry1);
+        $('#ex03 > div:first').append(pTag1);*/
+    
+        //2) arry2배열을 국가 밑에 p태그로 추가
+        
+        $.each(arry2,function(idx,value){
+            let pTg = $('<p/>').text(value);
+            $('#ex03 > div:contains("국가")').append(pTg);
+        })
+        
+        /* 내풀이ㅠㅠ 
+        let pTag2 = $('<p/>');
+         pTag2.text(arry2);
+         $('#ex03 > div:first').next().append(pTag2);*/
+
+        //3) 1)을 푼 후 arry3배열의 지역에 따라서 이름을 추가
+        
+        $(arry3).each(function(idx,obj){;
+            $('#ex03 > div:contains("도시") > p').each(function(idx,tag){
+                if(tag.textContent == obj.area){
+                    let pT = $('<p/>').text('이름 : ' +obj.name);
+                    tag.appendChild(pT);
+                }
+            })
+        })
+
+    </script>
+
+    <div id="ex04">
+        <ul>
+            <li>내용1</li>
+            <li>내용2</li>
+            <li id="list3">내용3</li>
+            <li>내용4</li>
+        </ul>
+    </div>
+
+    <script>
+        //index() -> 선택자를 이용한 결과 중에 검색조건을 만족하는 요소의 인덱스값
+        let search = $('#ex04 li');
+        let index = search.index($('#list3'));
+        let tag = search.eq(index);
+
+        console.log(tag);
+
+    </script>
+</body>
+
+</html>
