@@ -12,7 +12,6 @@
     <div id="test">
         <child-component message="외부로부터 건네받은 데이터">
             <p>부모 객체에서 정의한 태그</p>
-
         </child-component>
     </div>
 
@@ -38,7 +37,6 @@
         <my-component v-bind:text="message">
             <p slot="header"><em>헤더입니다</em></p>
             <h3 slot="footer">푸터입니다</h3>
-
         </my-component>
     </div>
     <script>
@@ -66,6 +64,92 @@
             }
         })
     </script>
+    
+    <div id="app2">
+        <!--
+        <form-component v-bind:author="authorLabel"
+                        v-bind:title="titleLabel">
+                    
+        <h1>{{header}}</h1>  slot으로 데이터를 넘기겠다.
+        </form-component>
+        -->
+        <form-component>
+            <h1>{{header}}</h1>
+            <label for="title" slot="titleSlot">{{titleLabel}}</label>
+            <label for="author" slot="authorSlot">{{authorSlot}}</label>
+        </form-component>
+    </div>
+    <script>
+        const formComponent = {
+            template : `<div>
+                            <form>
+                                <slot></slot>
+                                <!-- <label for="title">{{title}}</label> -->
+                                <slot name="titleSlot"></slot> 
+                                <input id="title" type="text"><br>
+                                <!-- <label for="author">{{author}}</label> -->
+                                <slot name="authorSlot"></slot> 
+                                <input id="author" type="text"><br>
+                                <button>제출하기</button>
+                            </form>
+                        </div>`,
+            props : ['title','author']
+        }
 
+        new Vue({
+            el: '#app2',
+            data : {
+                titleLabel : '제목 : ',
+                authorLabel : '저자 : ',
+                header : '책 저자 폼'
+            },
+            components : {
+                'form-component' : formComponent
+            }
+        })
+
+    </script>
+
+    <div id="app3">
+        <book-component v-bind:booklist="books">
+            <h1 slot="header">{{header}}</h1> <!--지정 슬롯 -->
+            <template slot="book" slot-scope="data">
+                <!-- slot-scope : 데이터를 임시로 가져옴. -->
+                <h2>
+                    <i>{{data.text.title}}</i>
+                    <small>by {{data.text.author}}</small>
+                </h2>
+            </template>
+        </book-component>
+
+    </div>
+
+    <script>
+        const bookComponent = {
+            template :`<div>
+                            <slot name="header"></slot> 
+                            <slot name="book"
+                                        v-for="book in booklist"
+                                        v-bind:text="book">
+                            </slot>                           
+                        </div>`,
+            props : ['booklist']
+        }
+
+        new Vue ({
+            el:'#app3',
+            data : {
+                header : '책 제목',
+                books : [
+                    {author : 'John Smith', title: 'Best of Times'},
+                    {author : 'Jane Doe', title: 'Go West Young Man'},
+                    {author : 'Avery Katz', title: 'The Life And Times of Avery'}
+                ]
+            },
+            components : {
+                'book-component' : bookComponent
+            }
+        })
+    </script>
 </body>
 </html>
