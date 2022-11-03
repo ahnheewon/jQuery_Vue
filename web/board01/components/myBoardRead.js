@@ -10,11 +10,11 @@ export default {
                                 </tr>
                             </table>
                             <button style="float:right;" v-on:click="boardList">목록</button>
-                        </div>`,
-            props : ['object'],
-            methods : {
+                </div>`,
+    props : ['object'],
+    methods : {
                 boardList : function(){
-                    this.$emit('board-list');
+                this.$emit('board-list');
                 }
             }   
         }     
